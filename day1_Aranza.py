@@ -12,9 +12,18 @@ list1.sort()
 list2.sort()
 distance = 0
 index = 0
-print(list1)
+similarityindex = 0
+
+listrepeatednumbers = []
 for number in list1:
     distance = distance + abs(number - list2[index])
+    if (number in list2) & (number not in listrepeatednumbers):
+        listrepeatednumbers.append(number)
+        repeatedinstances = list2.count(number)
+        similarityindex = similarityindex + (number * repeatedinstances)
     index = index + 1
+
+
 print(index)
 print(distance)
+print(similarityindex)
