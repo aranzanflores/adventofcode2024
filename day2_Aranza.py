@@ -3,12 +3,10 @@ def filter_input():
     with open('./input2.txt', encoding='utf-8') as file_handler:
         for line in file_handler:
             string_levels = line.split(" ")
-            print(string_levels)
             int_levels = []
             for level in string_levels:
                 if ((level != '') or (level != '\n')):
                     int_levels.append(int(level))
-            print(int_levels)
             reports.append(int_levels)
     
     return reports     
@@ -23,9 +21,9 @@ def check_ascending(a: int, b: int, ascending: bool) -> bool:
 
 def calculate_safety_of_report(levels: list) -> bool:
     if (len(levels) == 0):
-        return False
+        return True
     if (len(levels) == 1):
-        return False
+        return True
 
     ascending = is_ascending(levels[0], levels[1])
     size_of_list = len(levels)
@@ -37,6 +35,15 @@ def calculate_safety_of_report(levels: list) -> bool:
         if not check_difference(levels[level_index], levels[level_index + 1]):
             return False
     return True
+
+def calculate_dampened_safety_of_report(levels: list) -> bool:
+    for level in levels:
+        dampened_levels = levels.copy() 
+        dampened_levels.remove(level)
+        if calculate_safety_of_report(dampened_levels):
+          return True  
+    return False
+
 
 def check_difference(a: int, b: int) -> bool:
     abs_difference = abs(a-b)
@@ -50,6 +57,9 @@ def get_number_of_safe_reports(reports: list) -> int:
     number_of_safe_reports = 0
     for report in reports:
         if calculate_safety_of_report(report):
+            number_of_safe_reports += 1
+            continue
+        if calculate_dampened_safety_of_report(report):
             number_of_safe_reports += 1
     return number_of_safe_reports
 
